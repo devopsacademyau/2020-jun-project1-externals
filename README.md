@@ -9,11 +9,10 @@ Terraform requires that AWS CLI has administrative access to your aws account. D
 aws configure
 ```
 
-2. Clone the github repo "2020-jun-project1-externals" and checkin to the folder. Update terraform.tfvars file with your home IP-address in the following format. 
-
+2. Clone the github repo "2020-jun-project1-externals". Create a `terraform.tfvars` file as needed.
 ```
-yourhomenetworkip = "x.x.x.x/32"
-
+cp terraform.example.tfvars terraform.tfvars
+vim terraform.tfvars
 ```
 
 3. Terraform Initialise. This command is used to initialize a working directory containing Terraform configuration files.This is the first command to start with.  Init will create a hidden directory ".terraform" and download plugins as needed by the configuration. 
