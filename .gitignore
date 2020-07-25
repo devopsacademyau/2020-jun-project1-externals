@@ -1,0 +1,3 @@
+# Terraform state and metadata
+/terraform/.terraform
+/terraform/terraform.tfstate*
