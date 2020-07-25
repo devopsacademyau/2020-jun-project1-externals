@@ -4,19 +4,24 @@ resource "aws_ecs_cluster" "project1_ext" {
 
 resource "aws_ecs_task_definition" "project1_ext" {
   family = var.project_name
+  requires_compatibilities = ["FARGATE"]
+  network_mode = "awsvpc"
   container_definitions = jsonencode([
     {
-      name      = "wordpress container"
-      image     = "wordpress:latest"
-      essential = true
-      portMappings = [
+      "name"      : "wordpresscontainer",
+      "image"     : "wordpress:latest",
+      "essential" :  true,
+      "portMappings" : [
         {
-          containerPort = 80
-          protocol      = "http"
+          "containerPort" : 80
+          "protocol"      : "http"
         }
       ]
     }
   ])
+  memory = "512"
+  cpu = "256"
+  execution_role_arn = aws_iam_role.ecs-iam-role.arn
 }
 
 resource "aws_ecs_service" "project1_ext" { 
@@ -24,12 +29,10 @@ resource "aws_ecs_service" "project1_ext" {
   cluster = aws_ecs_cluster.project1_ext.id
   task_definition = aws_ecs_task_definition.project1_ext.arn
   launch_type     = "FARGATE"
-
   network_configuration {
     subnets = var.subnet_private_ids
     security_groups  =  [aws_security_group.ecs_sg.id]
   }
-  iam_role = aws_iam_role.ecs-iam-role.arn
 }
 
 resource "aws_security_group" "ecs_sg" {
@@ -55,7 +58,7 @@ resource "aws_security_group" "ecs_sg" {
   egress {
     from_port = 0
     to_port   = 0
-    protocol  = "all"
+    protocol  = "-1"
 
     cidr_blocks = [
       "0.0.0.0/0",

@@ -1,1 +1,1 @@
-yourhomenetworkip = "x.x.x.x/32"
+yourhomenetworkip = "58.96.95.89/32"
