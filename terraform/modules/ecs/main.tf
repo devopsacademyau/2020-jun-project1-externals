@@ -29,7 +29,7 @@ resource "aws_ecs_service" "project1_ext" {
     subnets = var.subnet_private_ids
     security_groups  =  [aws_security_group.ecs_sg.id]
   }
-  
+  iam_role = aws_iam_role.ecs-iam-role.arn
 }
 
 resource "aws_security_group" "ecs_sg" {
