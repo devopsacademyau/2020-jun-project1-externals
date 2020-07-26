@@ -1,6 +1,6 @@
 variable "your_home_network_cidr" {
   type        = string
-  description = "AWS region"
+  description = "CIDR for your home network (to allow SSH)"
 }
 
 variable "vpc_cidr" {
