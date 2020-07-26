@@ -1,10 +1,9 @@
-# Routing table for public subnets
-resource "aws_route_table" "wp_rt_public" {
-  vpc_id = aws_vpc.wp_vpc.id
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.wp_igw.id
+    gateway_id = aws_internet_gateway.this.id
   }
 
   tags = {
@@ -12,33 +11,30 @@ resource "aws_route_table" "wp_rt_public" {
   }
 }
 
-resource "aws_route_table_association" "wp_route_a" {
-
-  subnet_id      = aws_subnet.wp_public_subnet_az_a.id
-  route_table_id = aws_route_table.wp_rt_public.id
+resource "aws_route_table_association" "public_subnet_a" {
+  subnet_id      = aws_subnet.public_a.id
+  route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table_association" "wp_route_b" {
-  subnet_id      = aws_subnet.wp_public_subnet_az_b.id
-  route_table_id = aws_route_table.wp_rt_public.id
+resource "aws_route_table_association" "public_subnet_b" {
+  subnet_id      = aws_subnet.public_b.id
+  route_table_id = aws_route_table.public.id
 }
 
-
-# Routing table for private subnets
-resource "aws_route_table" "wp_rt_private" {
-  vpc_id = aws_vpc.wp_vpc.id
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.this.id
 
   tags = {
     Name = "wp_rt_private"
   }
 }
 
-resource "aws_route_table_association" "wp_private_route_a" {
-  subnet_id      = aws_subnet.wp_private_subnet_az_a.id
-  route_table_id = aws_route_table.wp_rt_private.id
+resource "aws_route_table_association" "private_subnet_a" {
+  subnet_id      = aws_subnet.private_a.id
+  route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route_table_association" "wp_private_route_b" {
-  subnet_id      = aws_subnet.wp_private_subnet_az_b.id
-  route_table_id = aws_route_table.wp_rt_private.id
+resource "aws_route_table_association" "private_subnet_b" {
+  subnet_id      = aws_subnet.private_b.id
+  route_table_id = aws_route_table.private.id
 }

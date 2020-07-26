@@ -1,6 +1,5 @@
-# Internet gateway for the public subnets
-resource "aws_internet_gateway" "wp_igw" {
-  vpc_id = aws_vpc.wp_vpc.id
+resource "aws_internet_gateway" "this" {
+  vpc_id = aws_vpc.this.id
 
   tags = {
     Name = "wp_igw"
