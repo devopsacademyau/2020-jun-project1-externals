@@ -1,4 +1,3 @@
-
 variable "region" {
   type        = string
   description = "AWS region"
@@ -11,7 +10,14 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "project_name" {
+  type        = string
+  description = "Project Name"
+  default     = "2020-jun-project1-externals"
+}
+
 variable "yourhomenetworkip" {
   type        = string
-  description = "Your Home network IP address Range X.X.X.X/32"
+  description = "AWS region"
+  default     = "ap-southeast-2"
 }
