@@ -1,6 +1,6 @@
 module "networking" {
   source            = "./modules/networking"
-  yourhomenetworkip = var.yourhomenetworkip
+  your_home_network_cidr = var.your_home_network_cidr
   vpc_cidr          = var.vpc_cidr
 }
 

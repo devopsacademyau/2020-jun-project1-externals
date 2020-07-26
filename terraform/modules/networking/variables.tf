@@ -1,4 +1,4 @@
-variable "yourhomenetworkip" {
+variable "your_home_network_cidr" {
   type        = string
   description = "AWS region"
 }

@@ -15,10 +15,10 @@ resource "aws_network_acl_rule" "wp_public_nacl_allow_traffic_your_homenetwork" 
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = var.yourhomenetworkip
+  cidr_block     = var.your_home_network_cidr
   from_port      = 22
   to_port        = 22
-  }
+}
 
 # accept ephermel port
 resource "aws_network_acl_rule" "wp_public_nacl_ephemeral_in" {
@@ -51,7 +51,7 @@ resource "aws_network_acl_rule" "wp_public_nacl_ephemeral_out2" {
   egress         = true
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = var.yourhomenetworkip
+  cidr_block     = var.your_home_network_cidr
   from_port      = 1024
   to_port        = 65535
 }
