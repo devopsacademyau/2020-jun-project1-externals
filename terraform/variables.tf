@@ -16,8 +16,7 @@ variable "project_name" {
   default     = "2020-jun-project1-externals"
 }
 
-variable "yourhomenetworkip" {
+variable "your_home_network_cidr" {
   type        = string
-  description = "AWS region"
-  default     = "ap-southeast-2"
+  description = "Your home network CIDR"
 }
