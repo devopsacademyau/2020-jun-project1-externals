@@ -1,19 +1,4 @@
-provider "aws" {
-  region = "ap-southeast-2"
-}
 
-######################################
-# Data sources to get VPC and subnets
-######################################
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc
-data "aws_vpc" "da-c02-vpc" {
-  #id = "${var.vpc_id}"
-  id = "vpc-02ec2836691642ace"
-}
-
-data "aws_subnet_ids" "da-c02-vpc" {
-  vpc_id = data.aws_vpc.da-c02-vpc.id
-}
 
 #############
 # RDS Aurora
@@ -28,13 +13,13 @@ module "aurora" {
 
   backtrack_window      = var.backtrack_window # ignored in serverless
 
-  #subnets                        = data.aws_subnet_ids.da-c02-vpc.ids
-  subnets                         = [
-     "subnet-080d66f82c68fe96b",  # da-c02-private-a
-     "subnet-03b9a6d084a3b586b",  # da-c02-private-b
-     "subnet-069d2eb4c2921ab78"   # da-c02-private-c
-  ]
-  vpc_id                          = data.aws_vpc.da-c02-vpc.id
+  subnets                         = var.subnet_private_ids
+  # subnets                         = [
+  #  "subnet-080d66f82c68fe96b",  # da-c02-private-a
+  #  "subnet-03b9a6d084a3b586b",  # da-c02-private-b
+  #  "subnet-069d2eb4c2921ab78"   # da-c02-private-c
+  # ]
+  vpc_id                          = var.vpc_id # data.aws_vpc.da-c02-vpc.id
   monitoring_interval             = var.monitoring_interval
   instance_type                   = var.db_instance_type
   apply_immediately               = var.apply_immediately
@@ -55,6 +40,7 @@ module "aurora" {
     timeout_action           = "ForceApplyCapacityChange"
   }
 }
+
 
 # aws rds create-db-parameter-group help
 # aws  rds   describe-db-engine-versions   --query   "DBEngineVersions[].DBParameterGroupFamily"
@@ -77,7 +63,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_mysql57_parameter_gro
 resource "aws_security_group" "app_servers" {
   name        = "app-servers"
   description = "For application servers"
-  vpc_id      = data.aws_vpc.da-c02-vpc.id
+  vpc_id      = var.vpc_id # data.aws_vpc.da-c02-vpc.id
 }
 
 resource "aws_security_group_rule" "allow_access" {
