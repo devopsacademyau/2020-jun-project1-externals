@@ -6,6 +6,7 @@
 module "aurora" {
   source                = "git@github.com:terraform-aws-modules/terraform-aws-rds-aurora.git"
   name                  = var.db_name
+  database_name         = "wordpress"
   engine                = var.db_engine
   engine_mode           = var.engine_mode
   replica_scale_enabled = var.replica_scale_enabled
@@ -30,6 +31,7 @@ module "aurora" {
   performance_insights_enabled    = var.performance_insights_enabled
   db_parameter_group_name         = aws_db_parameter_group.aurora_db_mysql57_parameter_group.id
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_mysql57_parameter_group.id
+  allowed_security_groups         = var.allowed_security_groups
 
   scaling_configuration = {
     auto_pause               = true
