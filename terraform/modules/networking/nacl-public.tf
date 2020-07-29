@@ -1,6 +1,6 @@
 resource "aws_network_acl" "public" {
   vpc_id     = aws_vpc.this.id
-  subnet_ids = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  subnet_ids = [for subnet in aws_subnet.public : subnet.id]
 
   tags = {
     Name = "wp_public_nacl"
