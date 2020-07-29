@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "wordpress" {
       portMappings = [
         {
           containerPort = 80
-          protocol      = "http"
+          protocol      = "tcp"
         }
       ]
     }
