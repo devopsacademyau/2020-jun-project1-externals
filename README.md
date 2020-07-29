@@ -41,4 +41,4 @@ terraform destroy
 
 Solution Diagram : 
 
-![Wordpress solution diagram01](https://user-images.githubusercontent.com/38310128/88784483-70dc1e80-d1d3-11ea-9239-949da0a80a27.jpg)
+![Wordpress solution diagram02](https://user-images.githubusercontent.com/38310128/88801373-f5876680-d1ec-11ea-8fd1-37cac55a5c9e.jpg)
