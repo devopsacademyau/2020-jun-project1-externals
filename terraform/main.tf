@@ -16,3 +16,10 @@ module "rds" {
   vpc_id             = module.networking.vpc_id
   subnet_private_ids = module.networking.subnet_private_ids
 }
+
+module "bastion" {
+  source            = "./modules/bastion"
+  vpc_id            = module.networking.vpc_id
+  subnet_id         = module.networking.subnet_public_ids[0]
+  ssh_allowed_cidrs = [var.your_home_network_cidr]
+}

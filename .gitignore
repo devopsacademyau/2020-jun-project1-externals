@@ -1,3 +1,6 @@
+# Keys
+*.pem
+
 # Terraform metadata
 /terraform/.terraform
 
