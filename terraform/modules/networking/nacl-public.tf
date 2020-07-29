@@ -7,6 +7,30 @@ resource "aws_network_acl" "public" {
   }
 }
 
+resource "aws_network_acl_rule" "public_ingress_icmp_from_home_network" {
+  # Allowing all ICMP from a trusted IP helps debugging networking issues.
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 10
+  egress         = false
+  protocol       = "icmp"
+  rule_action    = "allow"
+  cidr_block     = var.your_home_network_cidr
+  icmp_type      = -1
+  icmp_code      = -1
+}
+
+resource "aws_network_acl_rule" "public_ingress_echo_response_from_anywhere" {
+  # Allows servers to receive "ping responses" from any server.
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 11
+  egress         = false
+  protocol       = "icmp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  icmp_type      = 0 # Echo Reply
+  icmp_code      = -1
+}
+
 resource "aws_network_acl_rule" "public_ingress_ssh_from_home_network" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 100
@@ -18,13 +42,13 @@ resource "aws_network_acl_rule" "public_ingress_ssh_from_home_network" {
   to_port        = 22
 }
 
-resource "aws_network_acl_rule" "public_ingress_ephemeral_vpc" {
+resource "aws_network_acl_rule" "public_ingress_ephemeral" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 200
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = "10.0.0.0/16"
+  cidr_block     = "0.0.0.0/0"
   from_port      = 1024
   to_port        = 65535
 }
@@ -40,13 +64,57 @@ resource "aws_network_acl_rule" "public_egress_ssh_vpc" {
   to_port        = 22
 }
 
-resource "aws_network_acl_rule" "public_egress_ephemeral_home_network" {
+resource "aws_network_acl_rule" "public_egress_ephemeral" {
   network_acl_id = aws_network_acl.public.id
   rule_number    = 200
   egress         = true
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = var.your_home_network_cidr
+  cidr_block     = "0.0.0.0/0"
   from_port      = 1024
   to_port        = 65535
+}
+
+resource "aws_network_acl_rule" "public_egress_ping" {
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 10
+  egress         = true
+  protocol       = "icmp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  icmp_type      = 8 # Echo Request
+  icmp_code      = -1
+}
+
+resource "aws_network_acl_rule" "public_egress_ping_response" {
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 11
+  egress         = true
+  protocol       = "icmp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  icmp_type      = 0 # Echo Response
+  icmp_code      = -1
+}
+
+resource "aws_network_acl_rule" "public_egress_http" {
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 20
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 80
+  to_port        = 80
+}
+
+resource "aws_network_acl_rule" "public_egress_https" {
+  network_acl_id = aws_network_acl.public.id
+  rule_number    = 21
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 443
+  to_port        = 443
 }
