@@ -16,7 +16,38 @@ resource aws_iam_role "ecs" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "ecs" {
+resource "aws_iam_policy" "ecrpolicy" {
+  name        = "ecrpolicy"
+  path        = "/"
+  description = "Policy to access ECR"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+
+resource "aws_iam_role_policy_attachment" "ecs1" {
   role       = aws_iam_role.ecs.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
 }
+
+resource "aws_iam_role_policy_attachment" "ecs2" {
+  role       = aws_iam_role.ecs.name
+  policy_arn = "${aws_iam_policy.ecrpolicy.arn}"
+}
+
