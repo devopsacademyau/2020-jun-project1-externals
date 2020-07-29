@@ -6,6 +6,7 @@
 module "aurora" {
   source                = "git@github.com:terraform-aws-modules/terraform-aws-rds-aurora.git"
   name                  = var.db_name
+  database_name         = "wordpress"
   engine                = var.db_engine
   engine_mode           = var.engine_mode
   replica_scale_enabled = var.replica_scale_enabled
