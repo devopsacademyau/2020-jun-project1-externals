@@ -1,6 +1,6 @@
 2020-jun-project1-externals
 
-## Wordpress VPC deploying with Terraform 
+## Wordpress VPC deploying with Terraform
 
 1. Configure AWS CLI Access Credentials.
 Terraform requires that AWS CLI has administrative access to your aws account. Download your access keys and follow the below steps:
@@ -15,7 +15,7 @@ cp terraform.example.tfvars terraform.tfvars
 vim terraform.tfvars
 ```
 
-3. Terraform Initialise. This command is used to initialize a working directory containing Terraform configuration files.This is the first command to start with.  Init will create a hidden directory ".terraform" and download plugins as needed by the configuration. 
+3. Terraform Initialise. This command is used to initialize a working directory containing Terraform configuration files.This is the first command to start with.  Init will create a hidden directory ".terraform" and download plugins as needed by the configuration.
 
 ```
 terraform init
@@ -32,6 +32,8 @@ terraform plan
 ```
 terraform apply
 ```
+Note there docker commands related to building and uploading the image to ECR.  Terraform apply will have dependencies on these.  See these instructions [below](#docker-commands-to-upload-image-to-ecr).
+
 6. Terraform destroy. Infrastructure managed by Terraform will be destroyed. This will ask for confirmation before destroying.
 
 ```
@@ -39,6 +41,26 @@ terraform destroy
 
 ```
 
-Solution Diagram : 
+Solution Diagram :
 
 ![Wordpress solution diagram02](https://user-images.githubusercontent.com/38310128/88801373-f5876680-d1ec-11ea-8fd1-37cac55a5c9e.jpg)
+
+
+### Docker commands to upload image to ECR
+
+Login to ECR
+```
+aws ecr get-login --no-include-email --region ap-southeast-2
+```
+Copy and run the output of previous command.  Once executed you should get a "Login Succeeded"
+
+Get the repo URI:
+
+```
+aws ecr describe-repositories |grep repositoryUri
+```
+The use it to tag and push the built image, for example:
+```
+docker tag wordpress:latest 016454647794.dkr.ecr.ap-southeast-2.amazonaws.com/wordpress:latest
+docker push  016454647794.dkr.ecr.ap-southeast-2.amazonaws.com/wordpress:latest
+```
