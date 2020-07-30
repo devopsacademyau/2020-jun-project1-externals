@@ -21,7 +21,7 @@ resource "aws_iam_policy" "ecrpolicy" {
   path        = "/"
   description = "Policy to access ECR"
 
-  policy = <<EOF
+  policy = jsonencode(
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -37,7 +37,7 @@ resource "aws_iam_policy" "ecrpolicy" {
         }
     ]
 }
-EOF
+)
 }
 
 
@@ -48,6 +48,6 @@ resource "aws_iam_role_policy_attachment" "ecs1" {
 
 resource "aws_iam_role_policy_attachment" "ecs2" {
   role       = aws_iam_role.ecs.name
-  policy_arn = "${aws_iam_policy.ecrpolicy.arn}"
+  policy_arn = aws_iam_policy.ecrpolicy.arn
 }
 
