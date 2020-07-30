@@ -24,3 +24,10 @@ module "bastion" {
   subnet_id         = module.networking.subnet_public_ids[0]
   ssh_allowed_cidrs = [var.your_home_network_cidr]
 }
+
+
+module "efs" {
+  source    = "./modules/efs"
+  subnet_id = module.networking.subnet_private_ids[0]
+}
+
