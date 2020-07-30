@@ -35,6 +35,18 @@ resource "aws_ecs_service" "wordpress" {
   }
 }
 
+
+resource "aws_ecr_repository" "wprepo" {
+  name                 = "wordpress"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = false
+  }
+}
+
+
+
 resource "aws_security_group" "wordpress" {
 
   description = "ECS Security Group"
