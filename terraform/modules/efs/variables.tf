@@ -14,4 +14,3 @@ variable "vpc_id" {
 variable "sg_ecs" {
   type = string
 }
-

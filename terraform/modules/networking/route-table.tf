@@ -20,6 +20,10 @@ resource "aws_route_table_association" "public_subnet" {
 
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.this.id
+  }
 
   tags = {
     Name = "wp_rt_private"

@@ -11,3 +11,7 @@ variable "subnet_private_ids" {
 variable "allowed_security_groups" {
   type = list(string)
 }
+
+variable "sg_ecs" {
+  type = string
+}

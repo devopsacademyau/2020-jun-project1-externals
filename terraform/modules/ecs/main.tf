@@ -1,3 +1,6 @@
+data "aws_region" "current" {
+}
+
 resource "aws_ecs_cluster" "this" {
   name = var.project_name
 }
@@ -6,34 +9,86 @@ resource "aws_ecs_task_definition" "wordpress" {
   family                   = var.project_name
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
+  memory                   = var.memory
+  cpu                      = var.cpu
+  execution_role_arn       = aws_iam_role.ecs.arn
   container_definitions = jsonencode([
     {
       name      = "wordpresscontainer"
-      image     = "wordpress:latest"
+      image     = "${aws_ecr_repository.wprepo.repository_url}:latest"
       essential = true
+      mountPoints = [
+        {
+          sourceVolume  = "efs-volume"
+          containerPath = "/var/www/html"
+        }
+      ]
       portMappings = [
         {
           containerPort = 80
-          protocol      = "tcp"
+          hostPort      = 80
+        }
+      ]
+      "logConfiguration" : {
+        "logDriver" : "awslogs",
+        "options" : {
+          "awslogs-group" : aws_cloudwatch_log_group.ecs.name
+          "awslogs-region" : data.aws_region.current.name,
+          "awslogs-stream-prefix" : "wp_ecs"
+        }
+      }
+      "environment" : [
+        {
+          "name" : "WORDPRESS_DB_HOST",
+          "value" : var.rds.endpoint
+        },
+        {
+          "name" : "WORDPRESS_DB_USER",
+          "value" : var.rds.username
+        },
+        {
+          "name" : "WORDPRESS_DB_PASSWORD",
+          "value" : var.rds.password
+        },
+        {
+          "name" : "WORDPRESS_DB_NAME",
+          "value" : var.rds.dbname
         }
       ]
     }
   ])
-  memory             = "512"
-  cpu                = "256"
-  execution_role_arn = aws_iam_role.ecs.arn
+
+  volume {
+    name = "efs-volume"
+    efs_volume_configuration {
+      file_system_id = var.file_system_id
+    }
+  }
+
 }
 
+
+resource "aws_cloudwatch_log_group" "ecs" {
+  name              = "/ecs/${var.project_name}"
+  retention_in_days = var.retention_in_days
+}
+
+
 resource "aws_ecs_service" "wordpress" {
-  name            = var.project_name
-  cluster         = aws_ecs_cluster.this.id
-  task_definition = aws_ecs_task_definition.wordpress.arn
-  launch_type     = "FARGATE"
+  name                = var.project_name
+  cluster             = aws_ecs_cluster.this.id
+  desired_count       = var.desired_count
+  task_definition     = aws_ecs_task_definition.wordpress.arn
+  launch_type         = "FARGATE"
+  platform_version    = var.ecs_platform_version
+  scheduling_strategy = "REPLICA"
   network_configuration {
-    subnets         = var.subnet_private_ids
-    security_groups = [aws_security_group.wordpress.id]
+    subnets          = var.subnet_private_ids
+    security_groups  = [aws_security_group.wordpress.id]
+    assign_public_ip = true
   }
 }
+
 
 
 resource "aws_ecr_repository" "wprepo" {

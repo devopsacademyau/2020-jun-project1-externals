@@ -7,7 +7,7 @@ resource aws_iam_role "ecs" {
         {
           Effect = "Allow"
           Principal = {
-            Service = "ecs.amazonaws.com"
+            Service = "ecs-tasks.amazonaws.com"
           }
           Action = "sts:AssumeRole"
         }
@@ -22,28 +22,28 @@ resource "aws_iam_policy" "ecrpolicy" {
   description = "Policy to access ECR"
 
   policy = jsonencode(
-{
-    "Version": "2012-10-17",
-    "Statement": [
+    {
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-            "Effect": "Allow",
-            "Action": [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:BatchGetImage",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:GetAuthorizationToken"
-            ],
-            "Resource": "*"
+          "Effect" : "Allow",
+          "Action" : [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:GetAuthorizationToken"
+          ],
+          "Resource" : "*"
         }
-    ]
-}
-)
+      ]
+    }
+  )
 }
 
 
 resource "aws_iam_role_policy_attachment" "ecs1" {
   role       = aws_iam_role.ecs.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "ecs2" {

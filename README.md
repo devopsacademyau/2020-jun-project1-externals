@@ -47,20 +47,16 @@ Solution Diagram :
 
 
 ### Docker commands to upload image to ECR
+```
+Execute terraform apply before running the below commands
 
-Login to ECR
-```
-aws ecr get-login --no-include-email --region ap-southeast-2
-```
-Copy and run the output of previous command.  Once executed you should get a "Login Succeeded"
+Run below commands to push new word press images to ECR repostiry
 
-Get the repo URI:
+ECR_URL=$(aws ecr describe-repositories --region ap-southeast-2 --repository-names wordpress --query 'repositories[].repositoryUri' --output text)
 
-```
-aws ecr describe-repositories |grep repositoryUri
-```
-The use it to tag and push the built image, for example:
-```
-docker tag wordpress:latest 016454647794.dkr.ecr.ap-southeast-2.amazonaws.com/wordpress:latest
-docker push  016454647794.dkr.ecr.ap-southeast-2.amazonaws.com/wordpress:latest
-```
+docker tag wordpress:latest "$ECR_URL":latest
+docker push "$ECR_URL":latest
+
+Trigger ECS update service to use new image by ECS task
+aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-project1-externals --force-new-deployment
+````

@@ -5,9 +5,9 @@ resource "aws_security_group" "efs_sg" {
   name        = "project1_ext1_efs_sg"
 
   ingress {
-    protocol    = "tcp"
-    from_port   = 2049
-    to_port     = 2049
+    protocol        = "tcp"
+    from_port       = 2049
+    to_port         = 2049
     security_groups = [var.sg_ecs]
   }
 

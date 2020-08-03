@@ -44,17 +44,11 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_mysql57_parameter_gro
   description = "test-aurora57-cluster-parameter-group"
 }
 
-resource "aws_security_group" "app_servers" {
-  name        = "app-servers"
-  description = "For application servers"
-  vpc_id      = var.vpc_id
-}
-
 resource "aws_security_group_rule" "allow_access" {
   type                     = "ingress"
   from_port                = module.aurora.this_rds_cluster_port
   to_port                  = module.aurora.this_rds_cluster_port
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.app_servers.id
+  source_security_group_id = var.sg_ecs
   security_group_id        = module.aurora.this_security_group_id
 }

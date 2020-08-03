@@ -8,3 +8,10 @@ output "mysql_command" {
     password = module.rds.this_rds_cluster_master_password
   }
 }
+
+output "ecs_details" {
+  value = {
+    cluster_name = module.ecs.ecs_cluster_name
+    service_name = module.ecs.ecs_service_name
+  }
+}

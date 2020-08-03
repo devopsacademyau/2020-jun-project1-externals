@@ -5,10 +5,18 @@ module "networking" {
 }
 
 module "ecs" {
-  source             = "./modules/ecs"
-  project_name       = var.project_name
-  vpc_id             = module.networking.vpc_id
-  subnet_private_ids = module.networking.subnet_private_ids
+  source       = "./modules/ecs"
+  project_name = var.project_name
+  vpc_id       = module.networking.vpc_id
+  ##Using publicsubet as some issue with private subnets
+  subnet_private_ids = module.networking.subnet_public_ids
+  file_system_id     = module.efs.file_system_id
+  rds = {
+    endpoint = module.rds.this_rds_cluster_endpoint
+    username = module.rds.this_rds_cluster_master_username
+    password = module.rds.this_rds_cluster_master_password
+    dbname   = module.rds.this_rds_cluster_database_name
+  }
 }
 
 module "rds" {
@@ -16,6 +24,7 @@ module "rds" {
   vpc_id                  = module.networking.vpc_id
   subnet_private_ids      = module.networking.subnet_private_ids
   allowed_security_groups = [module.bastion.security_group_id]
+  sg_ecs                  = module.ecs.sg_ecs_id
 }
 
 module "bastion" {
