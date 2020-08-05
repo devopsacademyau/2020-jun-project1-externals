@@ -54,6 +54,14 @@ Run below commands to push new word press images to ECR repostiry
 
 ECR_URL=$(aws ecr describe-repositories --region ap-southeast-2 --repository-names wordpress --query 'repositories[].repositoryUri' --output text)
 
+# For aws-cli 1.9
+aws ecr get-login --no-include-email --region ap-southeast-2 \
+    | docker login --username AWS --password-stdin $ECR_URL
+
+# This works with aws-cli 2.0 -- change region as needed
+aws ecr get-login-password --region ap-southeast-2 \
+    | docker login --username AWS --password-stdin $ECR_URL
+
 docker tag wordpress:latest "$ECR_URL":latest
 docker push "$ECR_URL":latest
 
