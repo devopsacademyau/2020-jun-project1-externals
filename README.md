@@ -60,3 +60,14 @@ docker push "$ECR_URL":latest
 Trigger ECS update service to use new image by ECS task
 aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-project1-externals --force-new-deployment
 ````
+
+### Make fille 
+````
+Run below commands in the root directory create aws resource and docker images
+
+make all
+
+Run below command to destroy using terraform
+
+make destroy
+````
