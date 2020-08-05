@@ -25,6 +25,6 @@ push:
 	docker push  ${IMAGE_NAME}
 
 .PHONY:destroy
-detroy:
+destroy:
 	cd terraform;terraform destroy
 
