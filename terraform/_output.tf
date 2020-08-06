@@ -15,3 +15,7 @@ output "ecs_details" {
     service_name = module.ecs.ecs_service_name
   }
 }
+
+output "ecr_url" {
+  value = module.ecs.ecr_url
+}
