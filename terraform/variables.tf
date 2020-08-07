@@ -47,7 +47,7 @@ variable "desired_task_memory" {
 # Listener Application Load Balancer Port
 variable "alb_port" {
   description = "Origin Application Load Balancer Port"
-  default     = "80"
+  default     = "443"
 }
 
 # Target Group Load Balancer Port
@@ -69,4 +69,19 @@ variable "max_tasks" {
 variable "desired_tasks" {
   description = "Number of containers desired to run app task"
   default     = 2
+}
+
+variable "alb_certificate_arn" {
+  description = "Enter your certificate arn from ACM"
+  type        = string
+}
+
+variable "dns_name" {
+  description = "Enter your Route 53 Zone record name. Ex. prod, dev"
+  type        = string
+}
+
+variable "zone_id" {
+  description = "Enter your zone ID "
+  type        = string
 }

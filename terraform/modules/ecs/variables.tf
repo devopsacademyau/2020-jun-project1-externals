@@ -106,3 +106,15 @@ variable "cpu_to_scale_down" {
   description = "CPU % to Scale Down the number of containers"
 }
 
+variable  "alb_certificate_arn" {
+  description = "Enter your certificate arn from ACM"
+  type        = string
+}
+
+variable "dns_name" {
+  description = "Enter your Route 53 Zone record"
+}
+
+variable "zone_id" {
+  description = "Enter your zone ID "
+}

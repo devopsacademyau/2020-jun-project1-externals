@@ -9,10 +9,10 @@ module "ecs" {
   project_name = var.project_name
   vpc_id       = module.networking.vpc_id
   ##Using publicsubet as some issue with private subnets
-  subnet_private_ids = module.networking.subnet_private_ids
-  subnet_public_ids = module.networking.subnet_public_ids
-  file_system_id     = module.efs.file_system_id
-  wpalb_sg_id           = module.ecs.wpalb_sg_id
+  subnet_private_ids  = module.networking.subnet_private_ids
+  subnet_public_ids   = module.networking.subnet_public_ids
+  file_system_id      = module.efs.file_system_id
+  wpalb_sg_id         = module.ecs.wpalb_sg_id
   ecs_sg_id           = module.ecs.sg_ecs_id
   alb_port            = var.alb_port
   container_port      = var.container_port
@@ -23,14 +23,16 @@ module "ecs" {
   desired_tasks       = var.desired_tasks
   desired_task_cpu    = var.desired_task_cpu
   desired_task_memory = var.desired_task_memory
- 
- 
+  alb_certificate_arn = var.alb_certificate_arn
+  zone_id             = var.zone_id
+  dns_name            = var.dns_name
+
   security_groups_ids = [
     module.ecs.wpalb_sg_id,
     module.ecs.sg_ecs_id,
   ]
 
- rds = {
+  rds = {
     endpoint = module.rds.this_rds_cluster_endpoint
     username = module.rds.this_rds_cluster_master_username
     password = module.rds.this_rds_cluster_master_password

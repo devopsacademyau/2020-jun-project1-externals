@@ -10,7 +10,7 @@ resource "aws_alb" "wp_alb" {
   }
 }
 
-# Target Group for Web App Production
+# Target Group for wordpress
 resource "aws_alb_target_group" "target_group" {
   name        = "wordpressalbtg01"
   port        = var.container_port
@@ -43,7 +43,7 @@ resource "aws_security_group" "wpalb_sg" {
 
   ingress {
     from_port   = var.alb_port
-    to_port     = var.container_port
+    to_port     = var.alb_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
