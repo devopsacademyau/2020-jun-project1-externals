@@ -68,13 +68,13 @@ Pre requistes
 Follow the steps mentioned in the below link to register the domain
 
 
-[link]https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
 
 
 ## Create SSL certificate in ACM :
 
 
-1. [link]https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
+1.https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
 
 
 
