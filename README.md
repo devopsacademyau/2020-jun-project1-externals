@@ -9,7 +9,7 @@ Terraform requires that AWS CLI has administrative access to your aws account. D
 aws configure
 ```
 
-2. Clone the github repo "2020-jun-project1-externals". Create a `terraform.tfvars` file as needed.
+2. Clone the github repo "2020-jun-project1-externals". Create a `terraform.tfvars` file as needed and pass the required parameter values
 ```
 cp terraform.example.tfvars terraform.tfvars
 vim terraform.tfvars
@@ -68,6 +68,21 @@ docker push "$ECR_URL":latest
 Trigger ECS update service to use new image by ECS task
 aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-project1-externals --force-new-deployment
 ````
+
+Pre requistes 
+
+## Register a new domain using Route 53
+
+Follow the steps mentioned in the below link to register the domain
+
+
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
+
+
+## Create SSL certificate in ACM :
+
+
+https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
 
 ### Make fille 
 ````

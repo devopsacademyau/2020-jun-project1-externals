@@ -1,3 +1,4 @@
+# Creating ECS Role 
 resource aws_iam_role "ecs" {
   name = "${var.project_name}-ecs-role"
   assume_role_policy = jsonencode(
@@ -16,6 +17,7 @@ resource aws_iam_role "ecs" {
   )
 }
 
+# Creating IAM Policy to access ECR
 resource "aws_iam_policy" "ecrpolicy" {
   name        = "ecrpolicy"
   path        = "/"

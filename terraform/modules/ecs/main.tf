@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "wordpress" {
   execution_role_arn       = aws_iam_role.ecs.arn
   container_definitions = jsonencode([
     {
-      name      = "wordpresscontainer"
+      name      = "wordpress"
       image     = "${aws_ecr_repository.wprepo.repository_url}:latest"
       essential = true
       mountPoints = [
@@ -87,6 +87,12 @@ resource "aws_ecs_service" "wordpress" {
     security_groups  = [aws_security_group.wordpress.id]
     assign_public_ip = true
   }
+
+   load_balancer {
+    target_group_arn = aws_alb_target_group.target_group.arn
+    container_port = "80"
+    container_name = "wordpress"
+  }
 }
 
 
@@ -112,14 +118,14 @@ resource "aws_security_group" "wordpress" {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/16"]
   }
 
   egress {
