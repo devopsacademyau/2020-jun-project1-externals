@@ -10,11 +10,12 @@ data "aws_ami" "this" {
 }
 
 resource "aws_instance" "this" {
-  ami                    = data.aws_ami.this.id
-  instance_type          = "t2.micro"
-  subnet_id              = var.subnet_id
-  key_name               = aws_key_pair.this.key_name
-  vpc_security_group_ids = [aws_security_group.this.id]
+  ami                         = data.aws_ami.this.id
+  instance_type               = "t2.micro"
+  subnet_id                   = var.subnet_id
+  key_name                    = aws_key_pair.this.key_name
+  vpc_security_group_ids      = [aws_security_group.this.id]
+  associate_public_ip_address = true
 
   tags = {
     Name = "Bastion"
