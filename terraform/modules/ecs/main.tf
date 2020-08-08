@@ -1,6 +1,10 @@
 data "aws_region" "current" {
 }
 
+data "aws_ecs_task_definition" "wordpress" {
+  task_definition = aws_ecs_task_definition.wordpress.family
+}
+
 resource "aws_ecs_cluster" "this" {
   name = var.project_name
 }
@@ -15,7 +19,7 @@ resource "aws_ecs_task_definition" "wordpress" {
   container_definitions = jsonencode([
     {
       name      = "wordpress"
-      image     = "${aws_ecr_repository.wprepo.repository_url}:latest"
+      image     = "${aws_ecr_repository.wprepo.repository_url}:${var.image_tag}"
       essential = true
       mountPoints = [
         {
@@ -64,6 +68,9 @@ resource "aws_ecs_task_definition" "wordpress" {
       file_system_id = var.file_system_id
     }
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 
 }
 
@@ -78,10 +85,11 @@ resource "aws_ecs_service" "wordpress" {
   name                = var.project_name
   cluster             = aws_ecs_cluster.this.id
   desired_count       = var.desired_count
-  task_definition     = aws_ecs_task_definition.wordpress.arn
+  task_definition = "${aws_ecs_task_definition.wordpress.family}:${max(aws_ecs_task_definition.wordpress.revision, data.aws_ecs_task_definition.wordpress.revision)}"
   launch_type         = "FARGATE"
   platform_version    = var.ecs_platform_version
   scheduling_strategy = "REPLICA"
+  force_new_deployment = true
   network_configuration {
     subnets          = var.subnet_private_ids
     security_groups  = [aws_security_group.wordpress.id]
@@ -93,6 +101,8 @@ resource "aws_ecs_service" "wordpress" {
     container_port = "80"
     container_name = "wordpress"
   }
+
+
 }
 
 

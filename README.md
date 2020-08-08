@@ -84,9 +84,12 @@ https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
 
 https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
 
-### Make fille 
+### Using Makefile commands
+
+Make fille 
 ````
-Run below commands in the root directory create aws resource and docker images
+Run below commands in the root directory to create aws resource and docker images.
+Below command will create a docker with a short commit tag and push to ECR
 
 make all
 

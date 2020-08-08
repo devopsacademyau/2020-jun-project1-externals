@@ -54,9 +54,6 @@ variable "rds" {
   type = map
 }
 
-
-
-
 variable "wpalb_sg_id" {
   description = "Application Load Balancer Security Group"
 }
@@ -117,4 +114,8 @@ variable "dns_name" {
 
 variable "zone_id" {
   description = "Enter your zone ID "
+}
+
+variable "image_tag" {
+  description = "ecr docker image tag "
 }
