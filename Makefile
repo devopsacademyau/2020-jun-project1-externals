@@ -3,11 +3,11 @@ ECR_URL=$(shell aws ecr describe-repositories --region ap-southeast-2 --reposito
 ECR_LOGIN= $(shell aws ecr get-login-password |docker login --username AWS --password-stdin ${ECR_URL})
 IMAGE_NAME="${ECR_URL}:${SHA}"
 
-all : plan apply build push
+all : plan apply build push updateimage
 
 .PHONY: plan #Run Terraform Plan and output the plan
 plan:
-	cd terraform; terraform init ;terraform plan -out project1_plan
+	cd terraform; terraform init ;terraform plan -out project1_plan 
 
 .PHONY: apply #Run Terraform apply and creates the network and ECR
 apply:
@@ -24,7 +24,11 @@ push:
 	@echo ${ECR_LOGIN} 
 	docker push  ${IMAGE_NAME}
 
+.PHONY: updateimage
+updateimage: 
+	cd terraform; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
+
 .PHONY:destroy
 destroy:
-	cd terraform;terraform destroy
+	cd terraform;terraform destroy -auto-approve
 

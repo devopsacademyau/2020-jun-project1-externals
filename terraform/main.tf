@@ -26,7 +26,7 @@ module "ecs" {
   alb_certificate_arn = var.alb_certificate_arn
   zone_id             = var.zone_id
   dns_name            = var.dns_name
-
+  image_tag           = var.image_tag
   security_groups_ids = [
     module.ecs.wpalb_sg_id,
     module.ecs.sg_ecs_id,
