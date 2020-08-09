@@ -41,6 +41,49 @@ terraform destroy
 
 ```
 
+Pre requistes 
+
+## Register a new domain using Route 53
+
+Follow the steps mentioned in the below link to register the domain
+
+
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
+
+
+## Create SSL certificate in ACM :
+
+
+https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
+
+
+
+### Using Makefile commands
+
+````
+Run below commands in the root directory to create aws resource and docker images.
+Below command will create a docker with a short commit tag and push to ECR
+Please make sure that .tfvars is updated with correct values before running make all command.
+
+make all 
+
+Run below command to destroy using terraform
+
+make destroy
+
+make all will run below commands internally
+make plan
+make apply
+make build
+make publish
+make deploy-wp
+
+````
+
+
+
+
+
 Solution Diagram :
 
 ![Wordpress solution diagram02](https://user-images.githubusercontent.com/38310128/88801373-f5876680-d1ec-11ea-8fd1-37cac55a5c9e.jpg)
@@ -69,31 +112,3 @@ Trigger ECS update service to use new image by ECS task
 aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-project1-externals --force-new-deployment
 ````
 
-Pre requistes 
-
-## Register a new domain using Route 53
-
-Follow the steps mentioned in the below link to register the domain
-
-
-https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register.html
-
-
-## Create SSL certificate in ACM :
-
-
-https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
-
-### Using Makefile commands
-
-Make fille 
-````
-Run below commands in the root directory to create aws resource and docker images.
-Below command will create a docker with a short commit tag and push to ECR
-
-make all
-
-Run below command to destroy using terraform
-
-make destroy
-````
