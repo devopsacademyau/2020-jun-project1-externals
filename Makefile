@@ -26,6 +26,7 @@ publish:
 
 .PHONY: deploy-wp #Update the task definition with the new container built on previous
 deploy-wp: 
+	@echo "@@@ Update ECS service with new image task definition @@@"
 	cd terraform; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
 
 .PHONY:destroy
