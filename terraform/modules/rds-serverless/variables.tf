@@ -8,8 +8,8 @@ variable "subnet_private_ids" {
   description = "Private Subnet ids"
 }
 
-variable "allowed_security_groups" {
-  type = list(string)
+variable "allowed_security_group" {
+  type = string
 }
 
 variable "sg_ecs" {

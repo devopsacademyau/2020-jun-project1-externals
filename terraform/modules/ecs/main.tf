@@ -3,6 +3,7 @@ data "aws_region" "current" {
 
 data "aws_ecs_task_definition" "wordpress" {
   task_definition = aws_ecs_task_definition.wordpress.family
+  depends_on      = [aws_ecs_task_definition.wordpress]
 }
 
 resource "aws_ecs_cluster" "this" {

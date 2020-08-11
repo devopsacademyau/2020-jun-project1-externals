@@ -44,7 +44,7 @@ module "rds" {
   source                  = "./modules/rds-serverless"
   vpc_id                  = module.networking.vpc_id
   subnet_private_ids      = module.networking.subnet_private_ids
-  allowed_security_groups = [module.bastion.security_group_id]
+  allowed_security_group = module.bastion.security_group_id
   sg_ecs                  = module.ecs.sg_ecs_id
 }
 

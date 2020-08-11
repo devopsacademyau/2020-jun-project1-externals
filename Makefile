@@ -7,7 +7,7 @@ all : plan apply build publish deploy-wp
 
 .PHONY: plan #Run Terraform Plan and output the plan
 plan:
-	cd terraform; terraform init ;terraform plan -out project1_tf_plan
+	cd terraform; terraform init ;terraform refresh;terraform plan -out project1_tf_plan
 
 .PHONY: apply #Run Terraform apply and creates the network and ECR
 apply:
