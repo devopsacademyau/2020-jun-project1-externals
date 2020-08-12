@@ -1,29 +1,28 @@
+resource "aws_db_subnet_group" "this" {
+  name       = "rdssubnet"
+  subnet_ids = var.subnet_private_ids
 
-module "aurora" {
-  source                = "git@github.com:terraform-aws-modules/terraform-aws-rds-aurora.git"
-  name                  = "wordpress"
-  database_name         = "wordpress"
-  engine                = "aurora"
-  engine_mode           = "serverless"
-  replica_scale_enabled = false
-  replica_count         = 0
-  backtrack_window      = 10
+  tags = {
+    Name = "RDS DB Subnet Group"
+  }
+}
 
-  subnets                         = var.subnet_private_ids
-  vpc_id                          = var.vpc_id
-  monitoring_interval             = 60
-  instance_type                   = "db.t2.small"
+
+resource "aws_rds_cluster" "this" {
+  database_name                   = "wordpress"
+  engine                          = "aurora"
+  engine_mode                     = "serverless"
+  db_subnet_group_name            = aws_db_subnet_group.this.name
   apply_immediately               = true
   skip_final_snapshot             = true
   backup_retention_period         = 1
   deletion_protection             = false
   storage_encrypted               = true
-  performance_insights_enabled    = false
-  db_parameter_group_name         = aws_db_parameter_group.aurora_db_mysql57_parameter_group.id
+  vpc_security_group_ids          = [aws_security_group.rds.id]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_cluster_mysql57_parameter_group.id
-  allowed_security_groups         = var.allowed_security_groups
-
-  scaling_configuration = {
+  master_username                 = "root"
+  master_password                 = random_password.rds_password.result
+  scaling_configuration {
     auto_pause               = true
     max_capacity             = 256
     min_capacity             = 2
@@ -31,6 +30,13 @@ module "aurora" {
     timeout_action           = "ForceApplyCapacityChange"
   }
 }
+
+
+resource "random_password" "rds_password" {
+  length  = 10
+  special = false
+}
+
 
 resource "aws_db_parameter_group" "aurora_db_mysql57_parameter_group" {
   name        = "test-aurora57-parameter-group"
@@ -44,11 +50,27 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_mysql57_parameter_gro
   description = "test-aurora57-cluster-parameter-group"
 }
 
-resource "aws_security_group_rule" "allow_access" {
+resource "aws_security_group" "rds" {
+  description = "RDS SG"
+  vpc_id      = var.vpc_id
+  name        = "project1_ext1_rds_sg"
+}
+
+
+resource "aws_security_group_rule" "allow_baston_access" {
   type                     = "ingress"
-  from_port                = module.aurora.this_rds_cluster_port
-  to_port                  = module.aurora.this_rds_cluster_port
+  from_port                = aws_rds_cluster.this.port
+  to_port                  = aws_rds_cluster.this.port
+  protocol                 = "tcp"
+  source_security_group_id = var.allowed_security_group
+  security_group_id        = aws_security_group.rds.id
+}
+
+resource "aws_security_group_rule" "allow_ec2_access" {
+  type                     = "ingress"
+  from_port                = aws_rds_cluster.this.port
+  to_port                  = aws_rds_cluster.this.port
   protocol                 = "tcp"
   source_security_group_id = var.sg_ecs
-  security_group_id        = module.aurora.this_security_group_id
+  security_group_id        = aws_security_group.rds.id
 }
