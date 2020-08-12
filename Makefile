@@ -1,6 +1,6 @@
 SHA=$(shell git rev-parse --short HEAD)
 ECR_URL=$(shell aws ecr describe-repositories --region ap-southeast-2 --repository-names wordpress --query 'repositories[].repositoryUri' --output text)
-ECR_LOGIN= $(shell aws ecr get-login-password |docker login --username AWS --password-stdin ${ECR_URL})
+ECR_LOGIN= $(shell aws ecr get-login-password --region ap-southeast-2 |docker login --username AWS --password-stdin ${ECR_URL})
 IMAGE_NAME="${ECR_URL}:${SHA}"
 
 all : plan apply build publish deploy-wp
