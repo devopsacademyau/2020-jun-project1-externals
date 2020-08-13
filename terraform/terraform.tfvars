@@ -1,6 +1,6 @@
 # Copy this file to "terraform.tfvars" and adjust as needed.
 
-your_home_network_cidr = "101.181.70.69/32, 58.96.95.89/32" 
+your_home_network_cidr = "101.181.70.69/32" 
 
 # provide the certificate from ACM 
 alb_certificate_arn = "arn:aws:acm:ap-southeast-2:348248800869:certificate/0c6d4095-dd02-4717-bff1-b076303dd2cd"
