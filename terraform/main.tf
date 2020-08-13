@@ -1,3 +1,13 @@
+#Including S3 backend
+terraform {
+  backend "s3" {
+    bucket = "xxx"
+    key    = "terraform.tfstate"
+    region = "ap-southeast-2"
+  }
+}
+
+
 module "networking" {
   source                 = "./modules/networking"
   your_home_network_cidr = var.your_home_network_cidr

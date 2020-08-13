@@ -112,3 +112,23 @@ Trigger ECS update service to use new image by ECS task
 aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-project1-externals --force-new-deployment
 ````
 
+
+To intiate the Terraform CICD: 
+
+NOTE : This CICD doesn't work on devopsacademyau/2020-jun-project1-externals as the AWS ACCESS KEYS are not centrally stored. As a prerequisite perform the below steps before PR/Commit requests.
+
+1. Create following secrets AWS_ACCESS_KEY_ID , AWS_SECRET_ACCESS_KEY in the  GITHUB Settings -> secrets.
+
+2. Create a S3 bucket manually to store tfstate file and specify the bucket name in the terraform/main.tf (backend configuration),
+
+#Including S3 backend
+terraform {
+  backend "s3" {
+    bucket = "your bucket name "
+    key    = "terraform.tfstate"
+    region = "ap-southeast-2"
+  }
+}
+
+3. Create a dyanamodb table with the table name and primary name[key partition] as "LockID" .
+

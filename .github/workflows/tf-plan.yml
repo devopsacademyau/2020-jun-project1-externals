@@ -41,15 +41,7 @@ jobs:
 
       - name: "Terraform plan"
         id: plan
-        run: |
-          mkdir -p ~/.ssh
-          touch ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo '${{ secrets.SSH_PRIVATE_KEY }}' >> ~/.ssh/id_rsa
-          touch ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/id_rsa
-          echo "github.com ssh-rsa ${{ env.GITHUB_COM_SSH_RSA_PUBLIC_KEY }}" >> ~/.ssh/known_hosts
-          chmod 400 ~/.ssh/known_hosts
+        run: 
           make plan
       
            
