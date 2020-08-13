@@ -1,9 +1,5 @@
-#Including S3 backend
 terraform {
-  backend "s3" {
-    bucket = "da-wp-backend-s3"
-    key    = "terraform.tfstate"
-    region = "ap-southeast-2"
+ backend "s3" {
   }
 }
 
