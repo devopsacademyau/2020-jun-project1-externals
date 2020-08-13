@@ -121,6 +121,7 @@ NOTE : This CICD doesn't work on devopsacademyau/2020-jun-project1-externals as 
 
 2. Create a S3 bucket manually to store tfstate file and specify the bucket name in the terraform/main.tf (backend configuration),
 
+````
 #Including S3 backend
 terraform {
   backend "s3" {
@@ -130,5 +131,6 @@ terraform {
   }
 }
 
+````
 3. Create a dyanamodb table with the table name and primary name[key partition] as "LockID" .
 
