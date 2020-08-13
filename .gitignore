@@ -5,6 +5,6 @@
 /terraform/.terraform
 
 # Terraform state files and locks
-/terraform/terraform.tfvars
+#/terraform/terraform.tfvars
 /terraform/terraform.tfstate*
 /terraform/.terraform.tfstate*

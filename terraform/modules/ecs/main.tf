@@ -1,6 +1,3 @@
-data "aws_region" "current" {
-}
-
 data "aws_ecs_task_definition" "wordpress" {
   task_definition = aws_ecs_task_definition.wordpress.family
   depends_on      = [aws_ecs_task_definition.wordpress]
@@ -38,7 +35,7 @@ resource "aws_ecs_task_definition" "wordpress" {
         "logDriver" : "awslogs",
         "options" : {
           "awslogs-group" : aws_cloudwatch_log_group.ecs.name
-          "awslogs-region" : data.aws_region.current.name,
+          "awslogs-region" : var.region,
           "awslogs-stream-prefix" : "wp_ecs"
         }
       }
