@@ -2,6 +2,10 @@
 
 ## Wordpress VPC deploying with Terraform
 
+Solution Diagram :
+
+<img src=>"2020-jun-project1-externals/docs/Wordpresssolutiondiagram03.png"
+
 
 1. Configure AWS CLI Access Credentials.
 Terraform requires that AWS CLI has administrative access to your aws account. Download your access keys and follow the below steps:
@@ -121,12 +125,6 @@ make publish
 ```
 Below make command is used to deploy latest docker image in ECR
 # make deploy-wp
-
-
-Solution Diagram :
-
-![Wordpress solution diagram03](https://user-images.githubusercontent.com/38310128/90312451-ebcd6500-df47-11ea-903f-01664d8ab9c9.png)
-
 
 ### Docker commands to upload image to ECR
 ```
