@@ -19,7 +19,6 @@ plan:
 
 .PHONY: _plan #bash command to run the plan
 _plan:
-	#cd terraform;terraform init -backend-config bucket=$(s3_bucket) ;terraform refresh;terraform plan -out project1_tf_plan
 	cd terraform;terraform init -backend-config=backend.tfvars;terraform refresh;terraform plan -out project1_tf_plan
 .PHONY: apply #Execute the Terraform Apply to creates the network and ECR
 apply:

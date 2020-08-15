@@ -3,8 +3,8 @@ name: "Application CI"
 # Trigger when a pull request is received
 on:
   pull_request:
-  #paths:
-   # - "docker/**"
+  paths:
+    - "docker/**"
 jobs:
   terraform-plan:
     name: "Application Build"
