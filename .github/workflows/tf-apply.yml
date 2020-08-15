@@ -53,6 +53,9 @@ jobs:
         run: |
           make plan 
           make apply
+      - name: "Rebuild Docker Image and Publish to ECR Repo"
+        id: apply
+        run: |
           make build
           make publish
-          make deploy-wp
+          make deploy-wp    

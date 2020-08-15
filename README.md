@@ -63,29 +63,35 @@ make localsetup
 Once the local config command is completed below make commands can be used to bring up the applications
 
 
-### Using Makefile commands
+## Makefile commands
 
-````
-Run below commands in the root directory to create aws resource and docker images.
+Run below commands in the root directory to create aws resource and push docker images.
+
 Below command will create a docker with a short commit tag and push to ECR
-Please make sure that make localsetup is ran with correct values before running this command
+
+### Create AWS infra and docker
+
+Please make sure  make localsetup is ran with correct values before running this command
+
 ```
+
 make all
 ```
 
 Run below command to destroy using terraform
+
 ```
 make destroy
 ```
+
 This will run Terraform destroy
 
 Terraform destroy. Infrastructure managed by Terraform will be destroyed [terraform destory]
 
-```
 
 ### Below make  steps are optional .make all will run all the required commands internally
 
-## make plan
+### make plan
 ```
 make plan
 ```
@@ -97,7 +103,7 @@ This will run below terraform commands
 2. Terraform plan. Run this command to view te execution plan for your configuration. The execution plan specifies what actions Terraform will take to achieve the desired state defined in the configuration, and the order in which the actions occur.[terraform plan]
 
 
-## make apply
+### make apply
 ```
 make apply
 ```
@@ -105,7 +111,7 @@ make apply
 Terraform apply. In the same directory as the main.tf file you created, run the terraform apply command to apply your configuration.After confirming your execution plan as yes, Terraform will create your resource group [terraform apply]
 
 
-## make build
+### make build
 ```
 make build
 ```
@@ -113,7 +119,7 @@ make build
 This will build docker image for worpress and tag with ECR repo
 
 
-# make publish
+### make publish
 
 This will  push new word press images to ECR repostiry
 ```
@@ -121,7 +127,9 @@ make publish
 ```
 Below make command is used to deploy latest docker image in ECR
 # make deploy-wp
-
+```
+make deploy-wp
+```
 
 Solution Diagram :
 
@@ -152,11 +160,12 @@ aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-
 ````
 
 
-To intiate the Terraform CICD: 
+Terraform/Application CICD: 
 
 NOTE : This CICD doesn't work on devopsacademyau/2020-jun-project1-externals as the AWS ACCESS KEYS are not centrally stored. As a prerequisite perform the below steps before PR/Commit requests.
 
-1. Create following secrets in the  GITHUB Settings -> secrets.
+1. Update following secrets in the  GITHUB Settings -> secrets.
+
 AWS_ACCESS_KEY_ID 
 AWS_SECRET_ACCESS_KEY 
 DNS_NAME
