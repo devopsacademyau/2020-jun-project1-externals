@@ -4,7 +4,7 @@ name: "Application CI"
 on:
   pull_request:
   paths:
-    - "docker/**"
+    #- "docker/**"
 jobs:
   terraform-plan:
     name: "Application Build"
