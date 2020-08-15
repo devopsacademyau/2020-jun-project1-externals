@@ -49,7 +49,7 @@ deploy-wp:
 
 .PHONY: _deploy-wp #Update the task definition with the new container built on previous
 _deploy-wp: 
-	cd terraform; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
+	cd terraform;terraform init; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
 
 .PHONY: destroy #Deletes the AWS infra created by terraform
 destroy:
