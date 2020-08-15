@@ -125,7 +125,7 @@ Below make command is used to deploy latest docker image in ECR
 
 Solution Diagram :
 
-![Wordpress solution diagram03](docs/Wordpresssolutiondiagram03.png)
+![Wordpress solution diagram03](2020-jun-project1-externals/docs/Wordpresssolutiondiagram03.png)
 
 
 ### Docker commands to upload image to ECR
