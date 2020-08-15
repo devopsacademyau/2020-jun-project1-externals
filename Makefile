@@ -19,7 +19,6 @@ plan:
 
 .PHONY: _plan #bash command to run the plan
 _plan:
-	#cd terraform;terraform init -backend-config bucket=$(s3_bucket) ;terraform refresh;terraform plan -out project1_tf_plan
 	cd terraform;terraform init -backend-config=backend.tfvars;terraform refresh;terraform plan -out project1_tf_plan
 .PHONY: apply #Execute the Terraform Apply to creates the network and ECR
 apply:
@@ -33,6 +32,11 @@ _apply:
 build: 
 	@echo "@@@ Start Docker Build  for ${ECR_TAG} @@@"
 	ECR_TAG=${ECR_TAG}  $(COMPOSE_WORDPRESS)
+
+
+.PHONY: ci-build # Run Docker build during CI as ECR repo wont be available during this time
+ci-build: 
+	$(COMPOSE_WORDPRESS)
 
 .PHONY: publish ## Push the docker image to ECR repo
 publish:
