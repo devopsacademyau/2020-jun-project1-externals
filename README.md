@@ -162,10 +162,12 @@ aws ecs update-service --cluster 2020-jun-project1-externals --service 2020-jun-
 
 Terraform/Application CICD: 
 
-NOTE : This CICD doesn't work on devopsacademyau/2020-jun-project1-externals as the AWS ACCESS KEYS are not centrally stored. As a prerequisite perform the below steps before PR/Commit requests.
+NOTE : Below changes are needed in github secrets to make CI/CD works.
+ 
+ As a prerequisite perform the below steps before PR/Commit requests.
 
-1. Update following secrets in the  GITHUB Settings -> secrets.
-
+1. Create/Update following secrets in the  GITHUB Settings -> secrets.
+```
 AWS_ACCESS_KEY_ID 
 AWS_SECRET_ACCESS_KEY 
 DNS_NAME
@@ -173,8 +175,4 @@ HOME_NETWORK_IP_CIDR
 HOSTED_ZONE_ID
 S3_BUCKET_NAME
 SSL_CERTIFCATE_ARN
-
 ```
-
-
-````
