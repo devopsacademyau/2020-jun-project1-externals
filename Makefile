@@ -34,6 +34,11 @@ build:
 	@echo "@@@ Start Docker Build  for ${ECR_TAG} @@@"
 	ECR_TAG=${ECR_TAG}  $(COMPOSE_WORDPRESS)
 
+
+.PHONY: ci-build # Run Docker build during CI as ECR repo wont be available during this time
+ci-build: 
+	$(COMPOSE_WORDPRESS)
+
 .PHONY: publish ## Push the docker image to ECR repo
 publish:
 	@echo ${ECR_LOGIN} 
