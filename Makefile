@@ -19,7 +19,6 @@ plan:
 
 .PHONY: _plan #bash command to run the plan
 _plan:
-	#cd terraform;terraform init -backend-config bucket=$(s3_bucket) ;terraform refresh;terraform plan -out project1_tf_plan
 	cd terraform;terraform init -backend-config=backend.tfvars;terraform refresh;terraform plan -out project1_tf_plan
 .PHONY: apply #Execute the Terraform Apply to creates the network and ECR
 apply:
@@ -34,6 +33,11 @@ build:
 	@echo "@@@ Start Docker Build  for ${ECR_TAG} @@@"
 	ECR_TAG=${ECR_TAG}  $(COMPOSE_WORDPRESS)
 
+
+.PHONY: ci-build # Run Docker build during CI as ECR repo wont be available during this time
+ci-build: 
+	$(COMPOSE_WORDPRESS)
+
 .PHONY: publish ## Push the docker image to ECR repo
 publish:
 	@echo ${ECR_LOGIN} 
@@ -45,7 +49,7 @@ deploy-wp:
 
 .PHONY: _deploy-wp #Update the task definition with the new container built on previous
 _deploy-wp: 
-	cd terraform; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
+	cd terraform;terraform init; terraform apply -target=module.ecs -var="image_tag=${SHA}" -auto-approve
 
 .PHONY: destroy #Deletes the AWS infra created by terraform
 destroy:

@@ -1,14 +1,18 @@
-﻿name: "Terraform Apply"
+﻿name: "Application Deploy"
 
 # Trigger when commits are pushed to the master branch
 on:
-  push:
-    branches:
-      - master
+  workflow_run:
+    workflows: ["Terraform Apply"]
+    branches: [main]
+    types: 
+      - completed
+    #paths:
+      #- "docker/**"
 
 jobs:
-  terraform-plan:
-    name: "Terraform Apply"
+  App-Deploy:
+    name: "App Deploy"
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
@@ -48,14 +52,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
             
     
-      - name: "Terraform apply"
-        id: apply
-        run: |
-          make plan 
-          make apply
-      - name: "Rebuild Docker Image and Publish to ECR Repo"
-        id: dockerbuild
+      - name: "Application Deploy"
+        id: deploy
         run: |
           make build
           make publish
-          make deploy-wp    
+          make deploy-wp

@@ -1,25 +1,20 @@
-﻿name: "Terraform Apply"
+name: "Application CI"
 
-# Trigger when commits are pushed to the master branch
+# Trigger when a pull request is received
 on:
-  push:
-    branches:
-      - master
-
+  pull_request:
+  #paths:
+    #- "docker/**"
 jobs:
   terraform-plan:
-    name: "Terraform Apply"
+    name: "Application Build"
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
       # Marketplace: https://github.com/marketplace/actions/checkout
       - name: "Setup - Checkout"
         uses: actions/checkout@v2.1.0
-       
-
-      # Provides AWS credentials to Terraform
-      # By default, Terraform checks the home directory for a .aws folder with a credential file
-      # Documentation: https://docs.aws.amazon.com/ses/latest/DeveloperGuide/create-shared-credentials-file.html
+        
       - name: "Setup - Build AWS Credentials"
         run: |
           mkdir -p ~/.aws
@@ -28,8 +23,7 @@ jobs:
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
                 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-      
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   
       - name: "Setup Environment Variables"
         run: |
           touch .env
@@ -45,17 +39,23 @@ jobs:
           printf "\ndns_name =\"${{ secrets.DNS_NAME }}\"" >> terraform.tfvars
           printf "\nzone_id = \"${{ secrets.HOSTED_ZONE_ID }}\"" >> terraform.tfvars
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
-            
-    
-      - name: "Terraform apply"
-        id: apply
-        run: |
-          make plan 
-          make apply
-      - name: "Rebuild Docker Image and Publish to ECR Repo"
-        id: dockerbuild
-        run: |
-          make build
-          make publish
-          make deploy-wp    
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        #Init pulls credentials from the .aws/credentials file by default
+      - name: "Run - Application Build"
+        id: ci-build
+        run: 
+          make ci-build
+      # Submit a comment with the plan output to the pull request
+      - name: "Run - Application Build  Comment"
+        uses: actions/github-script@0.9.0
+        env:
+          STDOUT: "```${{ steps.plan.outputs.stdout }}```"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: process.env.STDOUT
+            })
