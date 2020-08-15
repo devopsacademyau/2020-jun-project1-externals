@@ -4,7 +4,7 @@
 
 Solution Diagram :
 
-<img src=>"2020-jun-project1-externals/docs/Wordpresssolutiondiagram03.png"
+![Wordpress solution diagram03](https://user-images.githubusercontent.com/38310128/90312605-1f5cbf00-df49-11ea-8000-c0d936b3bd4b.png)
 
 
 1. Configure AWS CLI Access Credentials.
