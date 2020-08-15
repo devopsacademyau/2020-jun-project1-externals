@@ -1,0 +1,19 @@
+version: "3.8"
+services: 
+    wordpress:
+        build: 
+            context: ./docker
+            dockerfile: Dockerfile.wordpress       
+        image: ${ECR_TAG}
+        environment: 
+            ECR_TAG: 'latest'
+    shell:
+        build: 
+            context: ./docker
+            dockerfile: Dockerfile.ubuntu  
+        env_file: .env   
+        environment:
+            - AWS_DEFAULT_REGION=ap-southeast-2
+        working_dir: /src
+        volumes: 
+            - .:/src

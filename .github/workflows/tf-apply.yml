@@ -16,11 +16,6 @@ jobs:
       - name: "Setup - Checkout"
         uses: actions/checkout@v2.1.0
        
-      # Static analysis of Terraform templates to spot potential security issues
-      # Marketplace: https://github.com/marketplace/actions/terraform-security-scan
-    #  - name: "Setup - Security Scan"
-    #    uses: triat/terraform-security-scan@v1
-
 
       # Provides AWS credentials to Terraform
       # By default, Terraform checks the home directory for a .aws folder with a credential file
@@ -33,19 +28,31 @@ jobs:
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
                 
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+      
+      - name: "Setup Environment Variables"
+        run: |
+          touch .env
+          echo AWS_ACCESS_KEY_ID =${{ secrets.AWS_ACCESS_KEY_ID }} >> .env
+          echo AWS_SECRET_ACCESS_KEY = ${{ secrets.AWS_SECRET_ACCESS_KEY }} >> .env
+          cd terraform
+          touch backend.tfvars
+          printf "bucket=\"${{ secrets.S3_BUCKET_NAME }}\"" >> backend.tfvars
+          printf "\nkey=\"terraform.tfstate\"" >> backend.tfvars
+          printf "\nregion=\"ap-southeast-2\"" >> backend.tfvars  
+          printf "your_home_network_cidr=\"${{ secrets.HOME_NETWORK_IP_CIDR }}\"" >>  terraform.tfvars
+          printf "\nalb_certificate_arn= \"${{ secrets.SSL_CERTIFCATE_ARN }}\"" >> terraform.tfvars
+          printf "\ndns_name =\"${{ secrets.DNS_NAME }}\"" >> terraform.tfvars
+          printf "\nzone_id = \"${{ secrets.HOSTED_ZONE_ID }}\"" >> terraform.tfvars
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
             
-         
-        #Init pulls credentials from the .aws/credentials file by default
-      - name: "Run - Terraform apply"
-        uses: hashicorp/setup-terraform@v1.0.1
-
+    
       - name: "Terraform apply"
+        id: apply
         run: |
           make plan 
           make apply
           make build
           make publish
           make deploy-wp
-          
-

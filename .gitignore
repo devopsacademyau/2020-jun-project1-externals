@@ -1,10 +1,12 @@
 # Keys
 *.pem
 
+.env
 # Terraform metadata
 /terraform/.terraform
 
 # Terraform state files and locks
-#/terraform/terraform.tfvars
+/terraform/backend.tfvars
+/terraform/terraform.tfvars
 /terraform/terraform.tfstate*
 /terraform/.terraform.tfstate*
