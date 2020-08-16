@@ -4,8 +4,8 @@ resource "aws_appautoscaling_target" "app_scale_target" {
   resource_id        = "service/${aws_ecs_cluster.this.name}/${aws_ecs_service.wordpress.name}"
   scalable_dimension = "ecs:service:DesiredCount"
 
-  max_capacity       = var.max_tasks
-  min_capacity       = var.min_tasks
+  max_capacity = var.max_tasks
+  min_capacity = var.min_tasks
 }
 
 # cloudwatch metric alarm for high cpu utilization 
