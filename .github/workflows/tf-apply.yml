@@ -5,9 +5,11 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+        - "docker/**"  
 
 jobs:
-  terraform-plan:
+  terraform-apply:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     steps:

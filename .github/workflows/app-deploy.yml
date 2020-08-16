@@ -2,13 +2,11 @@
 
 # Trigger when commits are pushed to the master branch
 on:
-  workflow_run:
-    workflows: ["Terraform Apply"]
-    branches: [main]
-    types: 
-      - completed
-    #paths:
-      #- "docker/**"
+  push:
+    branches:
+      - master
+    paths:
+      - "docker/**"
 
 jobs:
   App-Deploy:
@@ -55,6 +53,4 @@ jobs:
       - name: "Application Deploy"
         id: deploy
         run: |
-          make build
-          make publish
-          make deploy-wp
+          make all

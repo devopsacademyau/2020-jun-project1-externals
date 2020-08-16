@@ -8,7 +8,7 @@ resource "aws_alb_listener" "web_app" {
   default_action {
     target_group_arn = aws_alb_target_group.target_group.arn
     type             = "forward"
-    
+
   }
 }
 

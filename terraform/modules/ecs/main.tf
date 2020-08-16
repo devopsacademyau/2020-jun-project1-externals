@@ -80,13 +80,13 @@ resource "aws_cloudwatch_log_group" "ecs" {
 
 
 resource "aws_ecs_service" "wordpress" {
-  name                = var.project_name
-  cluster             = aws_ecs_cluster.this.id
-  desired_count       = var.desired_count
-  task_definition = "${aws_ecs_task_definition.wordpress.family}:${max(aws_ecs_task_definition.wordpress.revision, data.aws_ecs_task_definition.wordpress.revision)}"
-  launch_type         = "FARGATE"
-  platform_version    = var.ecs_platform_version
-  scheduling_strategy = "REPLICA"
+  name                 = var.project_name
+  cluster              = aws_ecs_cluster.this.id
+  desired_count        = var.desired_count
+  task_definition      = "${aws_ecs_task_definition.wordpress.family}:${max(aws_ecs_task_definition.wordpress.revision, data.aws_ecs_task_definition.wordpress.revision)}"
+  launch_type          = "FARGATE"
+  platform_version     = var.ecs_platform_version
+  scheduling_strategy  = "REPLICA"
   force_new_deployment = true
   network_configuration {
     subnets          = var.subnet_private_ids
@@ -94,10 +94,10 @@ resource "aws_ecs_service" "wordpress" {
     assign_public_ip = true
   }
 
-   load_balancer {
+  load_balancer {
     target_group_arn = aws_alb_target_group.target_group.arn
-    container_port = "80"
-    container_name = "wordpress"
+    container_port   = "80"
+    container_name   = "wordpress"
   }
 
 

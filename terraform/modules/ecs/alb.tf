@@ -1,9 +1,9 @@
 resource "aws_alb" "wp_alb" {
-  name            = "${var.project_name}-alb"
-  subnets         = var.subnet_public_ids   
-  security_groups = [var.wpalb_sg_id]
-  internal        = false
-  load_balancer_type         = "application"
+  name               = "${var.project_name}-alb"
+  subnets            = var.subnet_public_ids
+  security_groups    = [var.wpalb_sg_id]
+  internal           = false
+  load_balancer_type = "application"
   tags = {
     Name        = "${var.project_name}-alb"
     Environment = var.project_name
@@ -18,7 +18,7 @@ resource "aws_alb_target_group" "target_group" {
   vpc_id      = var.vpc_id
   target_type = "ip"
 
-    health_check {
+  health_check {
     interval = 60
     path     = "/index.html"
     port     = 80
@@ -48,7 +48,7 @@ resource "aws_security_group" "wpalb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  
+
   egress {
     from_port   = 0
     to_port     = 0
