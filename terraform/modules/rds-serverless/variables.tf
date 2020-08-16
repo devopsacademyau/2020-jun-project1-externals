@@ -15,3 +15,8 @@ variable "allowed_security_group" {
 variable "sg_ecs" {
   type = string
 }
+
+variable "project_name" {
+  type        = string
+  description = "Project Name"
+}

@@ -14,7 +14,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = false # Each resource must specifically request a public IP.
 
   tags = {
-    Name = "wp_public_${data.aws_availability_zones.available.names[count.index]}"
+    Name = "${var.project_name}_public_${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
@@ -27,6 +27,6 @@ resource "aws_subnet" "private" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name = "wp_private_${data.aws_availability_zones.available.names[count.index]}"
+    Name = "${var.project_name}_private_${data.aws_availability_zones.available.names[count.index]}"
   }
 }

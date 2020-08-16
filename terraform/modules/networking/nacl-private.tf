@@ -3,7 +3,7 @@ resource "aws_network_acl" "private" {
   subnet_ids = [for subnet in aws_subnet.private : subnet.id]
 
   tags = {
-    Name = "wp_private_nacl"
+    Name = "${var.project_name}_private_nacl"
   }
 }
 

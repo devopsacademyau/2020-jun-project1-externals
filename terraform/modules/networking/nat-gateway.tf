@@ -9,7 +9,7 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 
   tags = {
-    Name = "wp_nat_gateway"
+    Name = "${var.project_name}_nat_gateway"
   }
 }
 

@@ -18,13 +18,13 @@ resource "aws_instance" "this" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "Bastion"
+    Name = "${var.project_name} Bastion"
   }
 }
 
 resource "aws_security_group" "this" {
   vpc_id = var.vpc_id
-  name   = "bastion"
+  name   = "${var.project_name}-bastion-sg"
 
   ingress {
     protocol    = "tcp"
@@ -41,6 +41,6 @@ resource "aws_security_group" "this" {
   }
 
   tags = {
-    Name = "Bastion SG"
+    Name = "${var.project_name} Bastion SG"
   }
 }
