@@ -7,7 +7,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "wp_rt_public"
+    Name = "${var.project_name}_rt_public"
   }
 }
 
@@ -26,7 +26,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name = "wp_rt_private"
+    Name = "${var.project_name}_rt_private"
   }
 }
 

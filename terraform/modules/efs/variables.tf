@@ -14,3 +14,8 @@ variable "vpc_id" {
 variable "sg_ecs" {
   type = string
 }
+
+variable "project_name" {
+  type        = string
+  description = "Project Name"
+}

@@ -3,7 +3,7 @@ resource "aws_efs_file_system" "this" {
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   tags = {
-    Name = "wordpress"
+    Name = "${var.project_name}-wordpress"
   }
 }
 
@@ -25,7 +25,7 @@ resource "aws_efs_access_point" "ap" {
     path = "/wordpress"
   }
   tags = {
-    Name = "wordpress"
+    Name = "${var.project_name}-wordpress"
   }
 
 }

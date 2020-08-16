@@ -2,7 +2,7 @@ resource "aws_security_group" "efs_sg" {
 
   description = "EFS Security Group"
   vpc_id      = var.vpc_id
-  name        = "project1_ext1_efs_sg"
+  name        = "${var.project_name}_efs_sg"
 
   ingress {
     protocol        = "tcp"

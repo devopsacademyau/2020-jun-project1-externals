@@ -8,6 +8,7 @@ module "networking" {
   source                 = "./modules/networking"
   your_home_network_cidr = var.your_home_network_cidr
   vpc_cidr               = var.vpc_cidr
+  project_name           = var.project_name
 }
 
 module "ecs" {
@@ -52,6 +53,7 @@ module "rds" {
   subnet_private_ids     = module.networking.subnet_private_ids
   allowed_security_group = module.bastion.security_group_id
   sg_ecs                 = module.ecs.sg_ecs_id
+  project_name           = var.project_name
 }
 
 module "bastion" {
@@ -59,13 +61,15 @@ module "bastion" {
   vpc_id            = module.networking.vpc_id
   subnet_id         = module.networking.subnet_public_ids[0]
   ssh_allowed_cidrs = [var.your_home_network_cidr]
+  project_name      = var.project_name
 }
 
 module "efs" {
-  source     = "./modules/efs"
-  vpc_id     = module.networking.vpc_id
-  sg_ecs     = module.ecs.sg_ecs_id
-  subnet_id1 = module.networking.subnet_private_ids[0]
-  subnet_id2 = module.networking.subnet_private_ids[1]
+  source       = "./modules/efs"
+  vpc_id       = module.networking.vpc_id
+  sg_ecs       = module.ecs.sg_ecs_id
+  subnet_id1   = module.networking.subnet_private_ids[0]
+  subnet_id2   = module.networking.subnet_private_ids[1]
+  project_name = var.project_name
 }
 

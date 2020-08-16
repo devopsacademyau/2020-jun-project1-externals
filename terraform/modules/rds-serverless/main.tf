@@ -1,14 +1,15 @@
 resource "aws_db_subnet_group" "this" {
-  name       = "rdssubnet"
+  name       = "${var.project_name}-rds-subnet"
   subnet_ids = var.subnet_private_ids
 
   tags = {
-    Name = "RDS DB Subnet Group"
+    Name = "${var.project_name}-rds-subnet"
   }
 }
 
 
 resource "aws_rds_cluster" "this" {
+  cluster_identifier              = "${var.project_name}-aurora-mysql-cluster"
   database_name                   = "wordpress"
   engine                          = "aurora"
   engine_mode                     = "serverless"
@@ -39,21 +40,21 @@ resource "random_password" "rds_password" {
 
 
 resource "aws_db_parameter_group" "aurora_db_mysql57_parameter_group" {
-  name        = "test-aurora57-parameter-group"
+  name        = "${var.project_name}-aurora-parameter-group"
   family      = "aurora-mysql5.7"
-  description = "test-aurora57-parameter-group"
+  description = "${var.project_name}-aurora-parameter-group"
 }
 
 resource "aws_rds_cluster_parameter_group" "aurora_cluster_mysql57_parameter_group" {
-  name        = "test-aurora57-cluster-parameter-group"
+  name        = "${var.project_name}-aurora-cluster-parameter-group"
   family      = "aurora5.6"
-  description = "test-aurora57-cluster-parameter-group"
+  description = "${var.project_name}-aurora-cluster-parameter-group"
 }
 
 resource "aws_security_group" "rds" {
-  description = "RDS SG"
+  description = "${var.project_name}-rds-sg"
   vpc_id      = var.vpc_id
-  name        = "project1_ext1_rds_sg"
+  name        = "${var.project_name}-rds-sg"
 }
 
 

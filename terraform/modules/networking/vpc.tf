@@ -3,6 +3,6 @@ resource "aws_vpc" "this" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "wp_vpc"
+    Name = "${var.project_name}_vpc"
   }
 }

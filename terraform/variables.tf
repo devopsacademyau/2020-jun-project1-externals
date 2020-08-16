@@ -13,7 +13,7 @@ variable "vpc_cidr" {
 variable "project_name" {
   type        = string
   description = "Project Name"
-  default     = "2020-jun-project1-externals"
+  default     = "da-project1-ext"
 }
 
 variable "your_home_network_cidr" {

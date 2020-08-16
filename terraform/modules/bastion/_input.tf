@@ -9,3 +9,8 @@ variable "subnet_id" {
 variable "ssh_allowed_cidrs" {
   type = list(string)
 }
+
+variable "project_name" {
+  type        = string
+  description = "Project Name"
+}
