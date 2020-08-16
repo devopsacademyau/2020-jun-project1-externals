@@ -89,5 +89,5 @@ variable "zone_id" {
 variable "image_tag" {
   description = "Docker Image Tag "
   type        = string
-  default = "latest"
+  default     = "latest"
 }
