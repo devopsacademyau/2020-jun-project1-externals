@@ -133,8 +133,7 @@ make deploy-wp
 
 Solution Diagram :
 
-![Wordpress solution diagram02](https://user-images.githubusercontent.com/38310128/88801373-f5876680-d1ec-11ea-8fd1-37cac55a5c9e.jpg)
-
+![Wordpress solution diagram03](https://user-images.githubusercontent.com/38310128/90326124-f3cce980-dfc7-11ea-8677-688cf5010191.png)
 
 ### Docker commands to upload image to ECR
 ```
